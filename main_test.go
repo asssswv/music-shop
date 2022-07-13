@@ -64,11 +64,11 @@ func TestDeleteAlbumNotFound(t *testing.T) {
 
 func TestUpdateAlbumNotFound(t *testing.T) {
 	albumID := 999
-	request, _ := http.NewRequest("PUT", fmt.Sprintf("/albums/%d", albumID), strings.NewReader(""))
+	request, _ := http.NewRequest("PUT", fmt.Sprintf("/albums/%d", albumID), strings.NewReader(`{"title": "test"}`))
 	w := httptest.NewRecorder()
 	handelRequest(w, request)
 	if w.Code != http.StatusNotFound {
-		t.Fatal("status must be 404")
+		t.Fatal("status must be 404", w.Code)
 	}
 }
 
@@ -83,7 +83,7 @@ func TestUpdateAlbum(t *testing.T) {
 }
 
 func TestCreateBadStorage(t *testing.T) {
-	request, _ := http.NewRequest("POST", "/albums", strings.NewReader(""))
+	request, _ := http.NewRequest("POST", "/albums", strings.NewReader(`{"title": "test"}"`))
 	w := httptest.NewRecorder()
 	handelRequest(w, request)
 	if w.Code != http.StatusBadRequest {

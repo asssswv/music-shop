@@ -5,8 +5,10 @@ import (
 	"net/http"
 )
 
+var storage = NewMemoryStorage()
+
 func getAlbums(c *gin.Context) {
-	c.IndentedJSON(http.StatusOK, albums)
+	c.IndentedJSON(http.StatusOK, storage.Read())
 }
 
 func postAlbum(c *gin.Context) {
@@ -15,46 +17,49 @@ func postAlbum(c *gin.Context) {
 		c.IndentedJSON(http.StatusBadRequest, gin.H{"error": "bad_request"})
 		return
 	}
-	albums = append(albums, newAlbum)
+
+	if newAlbum.ID == "" {
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"error": "bad_request"})
+	}
+
+	storage.Create(newAlbum)
+	//albums = append(albums, newAlbum)
 	c.IndentedJSON(http.StatusCreated, newAlbum)
 }
 
 func getAlbumByID(c *gin.Context) {
 	id := c.Param("id")
+	album, err := storage.ReadOne(id)
 
-	for _, album := range albums {
-		if album.ID == id {
-			c.IndentedJSON(http.StatusOK, album)
-			return
-		}
+	if err != nil {
+		c.IndentedJSON(http.StatusNotFound, gin.H{"massage": "album_not_found"})
 	}
-	c.IndentedJSON(http.StatusNotFound, gin.H{"massage": "album_not_found"})
+
+	c.IndentedJSON(http.StatusOK, album)
 }
 
 func deleteAlbumByID(c *gin.Context) {
 	id := c.Param("id")
+	err := storage.Delete(id)
 
-	for i, album := range albums {
-		if album.ID == id {
-			c.IndentedJSON(http.StatusNoContent, album)
-			albums = append(albums[:i], albums[i+1:]...)
-			return
-		}
+	if err != nil {
+		c.IndentedJSON(http.StatusNotFound, gin.H{"massage": "album_not_found"})
+		return
 	}
-	c.IndentedJSON(http.StatusNotFound, gin.H{"massage": "album_not_found"})
+	c.IndentedJSON(http.StatusNoContent, Album{})
 }
 
 func updateAlbumByID(c *gin.Context) {
 	id := c.Param("id")
+	var newAlbum Album
+	_ = c.BindJSON(&newAlbum)
 
-	for i, album := range albums {
-		if album.ID == id {
-			_ = c.BindJSON(&albums[i])
-			c.IndentedJSON(http.StatusOK, albums[i])
-			return
-		}
+	album, err := storage.Update(id, newAlbum)
+	if err != nil {
+		c.IndentedJSON(http.StatusNotFound, gin.H{"massage": "not_found"})
+		return
 	}
-	c.IndentedJSON(http.StatusNotFound, gin.H{"massage": "not_found"})
+	c.IndentedJSON(http.StatusOK, album)
 }
 
 func getRouter() *gin.Engine {
