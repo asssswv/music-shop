@@ -69,8 +69,5 @@ func getRouter() *gin.Engine {
 
 func main() {
 	router := getRouter()
-	err := router.Run("localhost:8080")
-	if err != nil {
-		return
-	}
+	_ = router.Run("localhost:8080")
 }
