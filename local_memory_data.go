@@ -4,20 +4,22 @@ import (
 	"errors"
 )
 
-type Storage interface {
-	Create() Album
-	Read() Album
-	ReadOne() (Album, error)
-	Update() Album
-	Delete() Album
-}
-
 type MemoryStorage struct {
 	albums []Album
 }
 
-func (ms MemoryStorage) Create(a Album) {
+func NewMemoryStorage() MemoryStorage {
+	var albums = []Album{
+		{ID: "1", Title: "Blue Train", Artist: "John", Price: 56.99},
+		{ID: "2", Title: "Jeru", Artist: "Gerry", Price: 17.99},
+		{ID: "3", Title: "Sarah", Artist: "Sarah", Price: 39.99},
+	}
+	return MemoryStorage{albums: albums}
+}
+
+func (ms MemoryStorage) Create(a Album) (Album, error) {
 	ms.albums = append(ms.albums, a)
+	return a, nil
 }
 
 func (ms MemoryStorage) ReadOne(id string) (Album, error) {
@@ -69,20 +71,4 @@ func (ms MemoryStorage) Delete(id string) error {
 	}
 
 	return errors.New("not found")
-}
-
-func NewMemoryStorage() MemoryStorage {
-	var albums = []Album{
-		{ID: "1", Title: "Blue Train", Artist: "John", Price: 56.99},
-		{ID: "2", Title: "Jeru", Artist: "Gerry", Price: 17.99},
-		{ID: "3", Title: "Sarah", Artist: "Sarah", Price: 39.99},
-	}
-	return MemoryStorage{albums: albums}
-}
-
-type Album struct {
-	ID     string  `json:"id"`
-	Title  string  `json:"title"`
-	Artist string  `json:"artist"`
-	Price  float64 `json:"price"`
 }
