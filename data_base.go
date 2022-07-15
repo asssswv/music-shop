@@ -13,7 +13,7 @@ type PostgresStorage struct {
 }
 
 func (p PostgresStorage) CreateSchema() error {
-	_, err := p.db.Exec(`create table if not exists albums(ID NVARCHAR(16) primary key NOT NULL, Title NVARCHAR(128) NOT NULL , Artist NVARCHAR(128) NOT NULL, Price decimal NOT NULL)`)
+	_, err := p.db.Exec("create table if not exists albums(ID varchar(16) primary key NOT NULL, Title varchar(128) NOT NULL , Artist varchar(128) NOT NULL, Price decimal NOT NULL)")
 	return err
 }
 
