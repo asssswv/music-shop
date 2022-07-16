@@ -1,4 +1,6 @@
-# How to run and testing this project
+# How clone and run and testing this project
+* ## Clone
+    git clone git@github.com:asssswv/music-shop.git
 * ## Run db (postgresql).
     ### We will use docker to run the database
         docker run -it --name some-postgres -e POSTGRES_PASSWORD=pass -e POSTGRES_USER=user -e POSTGRES_DB=db -p 5432:5432 --rm postgres
