@@ -1,15 +1,16 @@
-package main
+package repository
 
 import (
 	"errors"
+	"github.com/asadbek280604/server_on_golang_example"
 )
 
 type MemoryStorage struct {
-	albums []Album
+	albums []music_shop.Album
 }
 
 func NewMemoryStorage() MemoryStorage {
-	var albums = []Album{
+	var albums = []music_shop.Album{
 		{ID: "1", Title: "Blue Train", Artist: "John", Price: 56.99},
 		{ID: "2", Title: "Jeru", Artist: "Gerry", Price: 17.99},
 		{ID: "3", Title: "Sarah", Artist: "Sarah", Price: 39.99},
@@ -17,30 +18,30 @@ func NewMemoryStorage() MemoryStorage {
 	return MemoryStorage{albums: albums}
 }
 
-func (ms MemoryStorage) Create(a Album) (Album, error) {
+func (ms MemoryStorage) Create(a music_shop.Album) (music_shop.Album, error) {
 	ms.albums = append(ms.albums, a)
 	return a, nil
 }
 
-func (ms MemoryStorage) ReadOne(id string) (Album, error) {
+func (ms MemoryStorage) ReadOne(id string) (music_shop.Album, error) {
 	for _, album := range ms.albums {
 		if album.ID == id {
 			return album, nil
 		}
 	}
-	return Album{}, errors.New("not found")
+	return music_shop.Album{}, errors.New("not found")
 }
 
-func (ms MemoryStorage) Read() []Album {
+func (ms MemoryStorage) Read() []music_shop.Album {
 	return ms.albums
 }
 
-func (ms MemoryStorage) Update(id string, newAlbum Album) (Album, error) {
+func (ms MemoryStorage) Update(id string, newAlbum music_shop.Album) (music_shop.Album, error) {
 	for i := range ms.albums {
 		if ms.albums[i].ID == id {
 
 			if newAlbum.Artist == "" && newAlbum.Price == 0 && newAlbum.Title == "" {
-				return Album{}, errors.New("not found")
+				return music_shop.Album{}, errors.New("not found")
 			}
 
 			if newAlbum.Artist != "" {
@@ -59,7 +60,7 @@ func (ms MemoryStorage) Update(id string, newAlbum Album) (Album, error) {
 			return ms.albums[i], nil
 		}
 	}
-	return Album{}, errors.New("not found")
+	return music_shop.Album{}, errors.New("not found")
 }
 
 func (ms MemoryStorage) Delete(id string) error {

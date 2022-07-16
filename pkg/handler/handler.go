@@ -3,15 +3,17 @@ package handler
 import (
 	"net/http"
 
+	"github.com/asadbek280604/server_on_golang_example"
+	"github.com/asadbek280604/server_on_golang_example/pkg/service"
 	"github.com/gin-gonic/gin"
 )
 
 func getAlbums(c *gin.Context) {
-	c.IndentedJSON(http.StatusOK, storage.Read())
+	c.IndentedJSON(http.StatusOK, service.Storage.Read())
 }
 
 func postAlbum(c *gin.Context) {
-	var newAlbum Album
+	var newAlbum music_shop.Album
 	if err := c.BindJSON(&newAlbum); err != nil {
 		c.IndentedJSON(http.StatusBadRequest, gin.H{"error": "bad_request"})
 		return
@@ -21,14 +23,14 @@ func postAlbum(c *gin.Context) {
 		c.IndentedJSON(http.StatusBadRequest, gin.H{"error": "bad_request"})
 	}
 
-	storage.Create(newAlbum)
+	service.Storage.Create(newAlbum)
 	//albums = append(albums, newAlbum)
 	c.IndentedJSON(http.StatusCreated, newAlbum)
 }
 
 func getAlbumByID(c *gin.Context) {
 	id := c.Param("id")
-	album, err := storage.ReadOne(id)
+	album, err := service.Storage.ReadOne(id)
 
 	if err != nil {
 		c.IndentedJSON(http.StatusNotFound, gin.H{"massage": "album_not_found"})
@@ -39,21 +41,21 @@ func getAlbumByID(c *gin.Context) {
 
 func deleteAlbumByID(c *gin.Context) {
 	id := c.Param("id")
-	err := storage.Delete(id)
+	err := service.Storage.Delete(id)
 
 	if err != nil {
 		c.IndentedJSON(http.StatusNotFound, gin.H{"massage": "album_not_found"})
 		return
 	}
-	c.IndentedJSON(http.StatusNoContent, Album{})
+	c.IndentedJSON(http.StatusNoContent, music_shop.Album{})
 }
 
 func updateAlbumByID(c *gin.Context) {
 	id := c.Param("id")
-	var newAlbum Album
+	var newAlbum music_shop.Album
 	_ = c.BindJSON(&newAlbum)
 
-	album, err := storage.Update(id, newAlbum)
+	album, err := service.Storage.Update(id, newAlbum)
 	if err != nil {
 		c.IndentedJSON(http.StatusNotFound, gin.H{"massage": "not_found"})
 		return
@@ -61,7 +63,7 @@ func updateAlbumByID(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, album)
 }
 
-func getRouter() *gin.Engine {
+func GetRouter() *gin.Engine {
 	router := gin.Default()
 	gin.SetMode(gin.ReleaseMode)
 	router.GET("/albums", getAlbums)
