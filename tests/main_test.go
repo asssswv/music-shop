@@ -1,4 +1,4 @@
-package main
+package tests
 
 import (
 	"fmt"
@@ -6,10 +6,12 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
+
+	"github.com/asadbek280604/server_on_golang_example/pkg/handler"
 )
 
 func handelRequest(w *httptest.ResponseRecorder, request *http.Request) {
-	router := getRouter()
+	router := handler.GetRouter()
 	router.ServeHTTP(w, request)
 }
 
