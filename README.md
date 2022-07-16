@@ -9,5 +9,4 @@
    + ### Run server
          go run cmd/main.go
 * ## Run unit tests
-      cd tests
-      go test -v
+      cd tests && go test -v
