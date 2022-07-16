@@ -2,7 +2,7 @@ package repository
 
 import (
 	"errors"
-	"github.com/asadbek280604/server_on_golang_example"
+	"github.com/asadbek280604/music-shop"
 )
 
 type MemoryStorage struct {

@@ -3,8 +3,8 @@ package handler
 import (
 	"net/http"
 
-	"github.com/asadbek280604/server_on_golang_example"
-	"github.com/asadbek280604/server_on_golang_example/pkg/service"
+	"github.com/asadbek280604/music-shop"
+	"github.com/asadbek280604/music-shop/pkg/service"
 	"github.com/gin-gonic/gin"
 )
 

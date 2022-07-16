@@ -1,4 +1,4 @@
-module github.com/asadbek280604/server_on_golang_example
+module github.com/asadbek280604/music-shop
 
 go 1.18
 

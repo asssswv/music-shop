@@ -1,8 +1,8 @@
 package service
 
 import (
-	"github.com/asadbek280604/server_on_golang_example"
-	"github.com/asadbek280604/server_on_golang_example/pkg/repository"
+	"github.com/asadbek280604/music-shop"
+	"github.com/asadbek280604/music-shop/pkg/repository"
 )
 
 type Service interface {

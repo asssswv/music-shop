@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/asadbek280604/server_on_golang_example/pkg/handler"
+	"github.com/asadbek280604/music-shop/pkg/handler"
 	"github.com/spf13/viper"
 )
 

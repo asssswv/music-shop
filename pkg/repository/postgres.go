@@ -3,7 +3,7 @@ package repository
 import (
 	"database/sql"
 	"errors"
-	"github.com/asadbek280604/server_on_golang_example"
+	"github.com/asadbek280604/music-shop"
 	_ "github.com/lib/pq"
 	"log"
 )
