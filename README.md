@@ -1,4 +1,4 @@
-# How clone and run and testing this project
+# How to clone and run and testing this project
 * ## Clone
       git clone git@github.com:asssswv/music-shop.git
 * ## Run db (postgresql).
